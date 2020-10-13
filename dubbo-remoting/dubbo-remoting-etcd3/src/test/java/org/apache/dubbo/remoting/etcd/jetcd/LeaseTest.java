@@ -74,9 +74,16 @@ public class LeaseTest {
     private static final ByteSequence VALUE = ByteSequence.from("bar", Charsets.UTF_8);
 
     @BeforeAll
-    public static void beforeClass() {
-        cluster = EtcdClusterFactory.buildCluster("etcd-lease", 3, false);
-        cluster.start();
+    public static void beforeClass() throws Exception {
+        try {
+            cluster = EtcdClusterFactory.buildCluster("etcd-lease", 3, false);
+            System.out.println("++++++ CheckPoint: 01");
+            cluster.start();
+            System.out.println("++++++ CheckPoint: 02");
+        }
+        catch(Exception e) {
+            System.out.println("=01=================="+e);
+        }
     }
 
     @AfterAll
@@ -85,10 +92,15 @@ public class LeaseTest {
     }
 
     @BeforeEach
-    public void setUp() {
-        client = Client.builder().endpoints(cluster.getClientEndpoints()).build();
-        kvClient = client.getKVClient();
-        leaseClient = client.getLeaseClient();
+    public void setUp() throws Exception {
+        try {
+            client = Client.builder().endpoints(cluster.getClientEndpoints()).build();
+            kvClient = client.getKVClient();
+            leaseClient = client.getLeaseClient();
+	}
+        catch(Exception e) {
+            System.out.println("=02=================="+e);
+	}
     }
 
     @AfterEach

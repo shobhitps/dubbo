@@ -1,18 +1,31 @@
 language: java
 sudo: false # faster builds
 
+os: linux
+dist: focal
+group: edge
+vert: vm
+
+
+arch: arm64-graviton2
+
 jdk:
   - openjdk11
-  - openjdk8
 
 cache:
   directories:
     - $HOME/.m2
 
-install: true
+install:
+  if [ "${TRAVIS_CPU_ARCH}" == "arm64" OR "${TRAVIS_CPU_ARCH}" == "arm64-graviton2" ]; then
+    sudo apt-get install -y openjdk-11-jdk;
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64;
+    export PATH=$JAVA_HOME/bin:$PATH;
+  fi
 
 script:
   - rm -rf $HOME/.m2/repository/org/glassfish/javax.el/3.0.1-b08
+  - rm -rf $HOME/.m2
   - travis_wait 30 ./mvnw --batch-mode --no-transfer-progress clean install -DskipTests=false -DskipIntegrationTests=false -Dcheckstyle.skip=false -Drat.skip=false -Dmaven.javadoc.skip=true
 
 after_success:

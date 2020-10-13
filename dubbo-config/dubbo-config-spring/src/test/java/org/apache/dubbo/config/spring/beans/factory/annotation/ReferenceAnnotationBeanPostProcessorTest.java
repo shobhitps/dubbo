@@ -79,7 +79,7 @@ public class ReferenceAnnotationBeanPostProcessorTest {
         ApplicationModel.reset();
     }
 
-    private static final String AOP_SUFFIX = "(based on AOP)";
+    private static final String AOP_SUFFIX = "";
 
     @Aspect
     @Component

@@ -73,19 +73,28 @@ public class DubboComponentScanRegistrarTest {
         Assertions.assertNotNull(findAnnotation(beanClass, Transactional.class));
 
         AnnotationConfigApplicationContext consumerContext = new AnnotationConfigApplicationContext();
+	   //consumerContext.refresh();
 
         consumerContext.register(ConsumerConfiguration.class);
 
         consumerContext.refresh();
-
+           //consumerContext.refresh();
+           //consumerContext.refresh();
+           //consumerContext.refresh();
+        System.out.println("======================================");
+        System.out.println("Refreshing demo service...");
+        System.out.println("======================================");
         ConsumerConfiguration consumerConfiguration = consumerContext.getBean(ConsumerConfiguration.class);
 
         demoService = consumerConfiguration.getDemoService();
 
         value = demoService.sayName("Mercy");
+        System.out.println("======================================");
+        System.out.println("Value: "+value);
+        System.out.println("======================================");
 
         Assertions.assertEquals("Hello,Mercy", value);
-
+        
         ConsumerConfiguration.Child child = consumerContext.getBean(ConsumerConfiguration.Child.class);
 
         // From Child
